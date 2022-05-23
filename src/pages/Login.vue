@@ -7,7 +7,7 @@
           </div>
           <!-- 表单部分 -->
           <el-form 
-          label-width="0px" 
+          label-width="0" 
           class="login_form"
           :model="loginForm"
           ref="loginFormRef"
@@ -50,7 +50,7 @@ export default {
             loginFormRules:{
                 username: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
-                    { min: 3, max: 6, message: '密码长度在 3 到 6 个字符', trigger: 'blur' }
+                    { min: 3, max: 6, message: '用户名长度在 3 到 6 个字符', trigger: 'blur' }
                 ],
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -61,16 +61,16 @@ export default {
     },
     methods: {
         resetLoginForm(){
-            this.$refs.loginFormRef.resetFields();
+            this.$refs.loginFormRef.resetFields()
         },
         login(){
             this.$refs.loginFormRef.validate(async valid => {
-                if (!valid) return;
-                const {data: res} = await this.$http.post("login", this.loginForm);
-                if (res.meta.status !== 200) return this.$message.error(`${res.meta.msg}`);
-                this.$message.success('登录成功！');
+                if (!valid) return
+                const {data: res} = await this.$http.post("login", this.loginForm)
+                if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+                this.$message.success('登录成功！')
                 //登录成功后，将 token 报存在 sessionStorage 中
-                window.sessionStorage.setItem("token", res.data.token);
+                window.sessionStorage.setItem("token", res.data.token)
                 //通过编程式导航跳转到主页
                 this.$router.push('/home')
             });
