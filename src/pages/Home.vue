@@ -82,7 +82,7 @@ export default {
         // 保存链接激活页
         saveNavstate(activePath){
             window.sessionStorage.setItem('saveNavstate', activePath)
-            this.activePath = activePathx
+            this.activePath = activePath
         }
     },
 }
