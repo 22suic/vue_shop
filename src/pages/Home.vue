@@ -22,7 +22,7 @@
                     :collapse="isCollapse"
                     :collapse-transition="false"
                     router
-                    :default-active="activePath">
+                    :default-active="$route.path.slice(1)">
                     <!-- 一级菜单 -->
                     <el-submenu :index="`${item.id}`" v-for="item in menuList" :key="item.id">
                         <template slot="title">
@@ -30,7 +30,8 @@
                             <span>{{item.authName}}</span>
                         </template>
                         <!-- 二级菜单 -->
-                        <el-menu-item :index="`${subitem.path}`" v-for="subitem in item.children" :key="subitem.id" @click="saveNavstate(`${subitem.path}`)">
+                        <el-menu-item :index="`${subitem.path}`" v-for="subitem in item.children" :key="subitem.id">
+                        <!-- <el-menu-item :index="`${subitem.path}`" v-for="subitem in item.children" :key="subitem.id" @click="saveNavstate(`${subitem.path}`)"> -->
                             <i class="el-icon-ice-cream-round"></i>
                             <span>{{subitem.authName}}</span>
                         </el-menu-item>
@@ -49,6 +50,7 @@
 export default {
     created() {
         this.getMenuList()
+        // this.activePath = window.sessionStorage.getItem('saveNavstate')
     },
     data() {
         return {
@@ -61,7 +63,8 @@ export default {
                 '145':'el-icon-pear'
             },
             isCollapse:false,
-            activePath:''
+            // //激活页路径
+            // activePath:''
         }
     },
     methods: {
@@ -74,16 +77,17 @@ export default {
             const {data: res} = await this.$http.get('menus')
             if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
             this.menuList = res.data
+            window.sessionStorage.setItem('menuList', JSON.stringify(res.data))
         },
         //折叠左侧菜单
         toggleCollapse(){
             this.isCollapse = !this.isCollapse
         },
-        // 保存链接激活页
-        saveNavstate(activePath){
-            window.sessionStorage.setItem('saveNavstate', activePath)
-            this.activePath = activePath
-        }
+        // // 保存链接激活页
+        // saveNavstate(activePath){
+        //     window.sessionStorage.setItem('saveNavstate', activePath)
+        //     this.activePath = activePath
+        // }
     },
 }
 </script>

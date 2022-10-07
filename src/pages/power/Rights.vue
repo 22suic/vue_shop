@@ -1,13 +1,9 @@
 <template>
   <div>
     <!-- 面包屑导航 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>权限列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <Breadcrumb :path="$route.path"/>
 
-    <!-- 表格 -->
+    <!-- 卡片视图 -->
     <el-card>
       <!-- 权限列表 -->
       <el-table :data="rightsList" border stripe>
@@ -27,7 +23,10 @@
 </template>
 
 <script>
+import Breadcrumb from '../../components/Breadcrumb.vue'
+
 export default {
+  components:{Breadcrumb},
   data() {
     return {
       rightsList: [],
@@ -46,6 +45,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

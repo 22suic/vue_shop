@@ -1,11 +1,7 @@
 <template>
   <div>
       <!-- 面包屑导航 -->
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-        <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-      </el-breadcrumb>
+      <Breadcrumb :path="$route.path"/>
 
       <!-- 卡片视图 -->
       <el-card>
@@ -22,7 +18,7 @@
           </el-row>
           <!-- 用户列表 -->
           <el-table :data="userList" border stripe>
-              <el-table-column type="index"></el-table-column>
+              <el-table-column type="index" ></el-table-column>
               <el-table-column label="姓名" prop="username"></el-table-column>
               <el-table-column label="邮箱" prop="email"></el-table-column>
               <el-table-column label="电话" prop="mobile"></el-table-column>
@@ -59,7 +55,7 @@
           <el-dialog
             title="添加用户"
             :visible.sync="addDialogVisible"
-            width="50%"
+            width="30%"
             @close="dialogClosed('addFormRef')">
             <el-form :model="addForm" :rules="formRules" label-width="80px" ref="addFormRef">
                 <el-form-item label="用户名称" prop="username">
@@ -84,7 +80,7 @@
           <el-dialog
             title="修改用户"
             :visible.sync="editDialogVisible"
-            width="50%"
+            width="30%"
             @close="dialogClosed('editFormRef')">
             <el-form :model="editForm" :rules="formRules" label-width="80px" ref="editFormRef">
                 <el-form-item label="用户名称" prop="username">
@@ -132,7 +128,10 @@
 </template>
 
 <script>
+import Breadcrumb from '../../components/Breadcrumb.vue'
+
 export default {
+    components:{Breadcrumb},
     data() {
         // 邮箱自定义校验规则
         var checkEmail = (_, value, cb) => {
@@ -297,7 +296,3 @@ export default {
     },
 }
 </script>
-
-<style>
-
-</style>

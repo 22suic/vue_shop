@@ -72,7 +72,7 @@ export default {
                 //登录成功后，将 token 报存在 sessionStorage 中
                 window.sessionStorage.setItem("token", res.data.token)
                 //通过编程式导航跳转到主页
-                this.$router.push('/home')
+                this.$router.replace('/home')
             });
         }
     },

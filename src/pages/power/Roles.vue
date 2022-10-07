@@ -1,13 +1,9 @@
 <template>
   <div>
     <!-- 面包屑导航 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>角色列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <Breadcrumb :path="$route.path"/>
 
-    <!-- 表格 -->
+    <!-- 卡片视图 -->
     <el-card>
         <el-row>
             <el-col>
@@ -74,7 +70,7 @@
       <el-dialog
         title="添加角色"
         :visible.sync="addDialogVisible"
-        width="50%"
+        width="30%"
         @close="dialogClosed('addFormRef')">
         <el-form :model="addForm" :rules="formRules" label-width="80px" ref="addFormRef">
             <el-form-item label="角色名称" prop="roleName">
@@ -93,7 +89,7 @@
       <el-dialog
         title="修改角色"
         :visible.sync="editDialogVisible"
-        width="50%"
+        width="30%"
         @close="dialogClosed('editFormRef')">
         <el-form :model="editForm" :rules="formRules" label-width="80px" ref="editFormRef">
             <el-form-item label="角色名称" prop="roleName">
@@ -112,7 +108,7 @@
       <el-dialog
         title="分配权限"
         :visible.sync="setDialogVisible"
-        width="50%"
+        width="30%"
         @close="setRightsDialogClosed">
         <el-tree :data="rightsList" :props="treeProps" default-expand-all show-checkbox node-key="id" :default-checked-keys="checkedRights" ref="setRightsTreeRef"></el-tree>
         <span slot="footer" class="dialog-footer">
@@ -125,7 +121,10 @@
 </template>
 
 <script>
+import Breadcrumb from '../../components/Breadcrumb.vue'
+
 export default {
+  components:{Breadcrumb},
   data() {
     return {
       rolesList: [],
@@ -140,8 +139,7 @@ export default {
       },
       // 添加角色表单规则
       formRules: {
-          roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' },
-              { min: 3, max: 6, message: '角色名长度在 3 到 6 个字符', trigger: 'blur' }]
+          roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
       },
       // 保存修改时查询到的用户信息
       editForm: {},
@@ -182,7 +180,7 @@ export default {
             this.$message.success('添加角色成功！')
         })
     },
-    // 展示修改用户对话框
+    // 展示修改角色对话框
     async showEditDialog(id){
         const {data: res} = await this.$http.get('roles/' + id)
         if (res.meta.status !== 200) return this.$message.error('查询角色信息失败！')
@@ -229,6 +227,7 @@ export default {
     },
     // 获取进入分配权限对话框时的选中权限
     getRightsChecked(node, arr){
+      // 检测是否为三级节点
       if (!node.children) return arr.push(node.id)
       node.children.forEach(element => {
         this.getRightsChecked(element, arr)
@@ -251,7 +250,7 @@ export default {
     async setRoleRights(){
       const keys = [
         ...this.$refs.setRightsTreeRef.getCheckedKeys(),
-        ...this.$refs.setRightsTreeRef.getHalfCheckedKeys()
+        ...this.$refs.setRightsTreeRef.getHalfCheckedKeys() 
       ]
       const idStr = keys.join(',')
       const {data :res} = await this.$http.post(`roles/${this.roleId}/rights`, {rids: idStr})
