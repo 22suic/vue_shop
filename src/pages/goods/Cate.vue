@@ -195,7 +195,7 @@ export default {
             this.getParentCateList()
         },
 
-        // 选择项发生变化是触发的函数
+        // 选择项发生变化时触发的函数
         parentCateChanged() {
             if (this.selectedKeys[this.selectedKeys.length-1]){
                 this.addForm.cat_pid = this.selectedKeys[this.selectedKeys.length-1]
@@ -269,9 +269,3 @@ export default {
     }
 }
 </script>
-
-<style>
-    .el-cascader{
-        width: 100%;
-    }
-</style>
