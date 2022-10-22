@@ -22,7 +22,7 @@
                     :collapse="isCollapse"
                     :collapse-transition="false"
                     router
-                    :default-active="$route.path.slice(1)">
+                    :default-active="$route.path.slice(1) === 'addOrEditGoods' ? 'goods' : $route.path.slice(1)">
                     <!-- 一级菜单 -->
                     <el-submenu :index="`${item.id}`" v-for="item in menuList" :key="item.id">
                         <template slot="title">

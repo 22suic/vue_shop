@@ -128,10 +128,7 @@
 </template>
 
 <script>
-import Breadcrumb from '../../components/Breadcrumb.vue'
-
 export default {
-    components:{Breadcrumb},
     data() {
         // 邮箱自定义校验规则
         var checkEmail = (_, value, cb) => {

@@ -36,7 +36,7 @@
             </el-col>
           </el-row>
           <!-- 表格 -->
-          <el-table :data="manyParamsList" border style="width: 100%" stripe>
+          <el-table :data="manyParamsList" border style="width: 100%" stripe v-if="manyTableIsShow">
             <el-table-column type="expand">
               <!-- tag 标签 -->
               <template slot-scope="scope">
@@ -99,7 +99,7 @@
             </el-col>
           </el-row>
           <!-- 表格 -->
-          <el-table :data="onlyAttriList" border style="width: 100%" stripe>
+          <el-table :data="onlyAttriList" border style="width: 100%" stripe v-if="onlyTableIsShow">
             <el-table-column type="expand">
               <!-- tag 标签 -->
               <template slot-scope="scope">
@@ -179,10 +179,7 @@
 </template>
 
 <script>
-import Breadcrumb from "../../components/Breadcrumb.vue";
-
 export default {
-  components: { Breadcrumb },
   data() {
     return {
       // 级联选择框选中项的id
@@ -214,6 +211,9 @@ export default {
       },
       // 用来判断添加还是编辑
       btnRef: "",
+      // 控制表格显示
+      manyTableIsShow: true,
+      onlyTableIsShow: false
     };
   },
   created() {
@@ -244,9 +244,16 @@ export default {
         if (this.activeName === "only") {
           if (!this.onlyAttriList.length) this.getParamsList(this.selectedId);
         } else {
-          if (!this.manyParamsList) this.getParamsList(this.selectedId);
+          if (!this.manyParamsList.length) this.getParamsList(this.selectedId);
         }
       }
+      if (this.activeName === "only") {
+          this.manyTableIsShow = false
+          this.onlyTableIsShow = true
+        } else {
+          this.manyTableIsShow = true
+          this.onlyTableIsShow = false
+        }
     },
     // 参数列表获取
     async getParamsList(id) {
@@ -256,9 +263,7 @@ export default {
       );
       if (res.meta.status !== 200)
         return this.$message.error("获取参数列表失败！");
-      console.log(res.data);
       res.data.forEach((item) => {
-        console.log(item.attr_vals.split(","));
         item.attr_vals = item.attr_vals ? item.attr_vals.split(",") : [];
         item.inputVisible = false;
         item.inputValue = "";
@@ -281,9 +286,7 @@ export default {
         { attr_sel: this.activeName }
       );
       if (res.meta.status !== 200) return this.$message.error("获取数据失败！");
-      console.log(res.data);
       this.dialogForm = res.data;
-      console.log(this.dialogForm);
     },
     // 添加或修改属性或参数
     addOrEditParams() {
@@ -412,9 +415,12 @@ export default {
     },
     // 计算级联选择框所选id数组最后一位
     selectedId() {
-      if (this.selectedKeys.length === 3)
-        return this.selectedKeys[this.selectedKeys.length - 1];
-    },
+      if (this.selectedKeys.length === 3) {
+        if (this.selectedKeys.length === 3)
+          return this.selectedKeys[this.selectedKeys.length - 1];
+        return null
+      }
+    }
   },
 };
 </script>

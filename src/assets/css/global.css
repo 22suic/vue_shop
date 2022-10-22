@@ -23,6 +23,10 @@ html,body,#app{
     height: 300px;
 }
 
-.el-cascader{
+.el-cascader {
     width: 100%;
+}
+
+.ql-editor {
+    min-height: 300px;
 }

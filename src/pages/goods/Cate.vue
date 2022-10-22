@@ -108,11 +108,7 @@
 </template>
 
 <script>
-import NewsVue from '../../../../vue_test/07_src_路由学习/pages/News.vue'
-import Breadcrumb from '../../components/Breadcrumb.vue' 
-
 export default {
-    components:{Breadcrumb},
     data() {
         return {
             // 查询条件
