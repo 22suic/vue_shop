@@ -207,10 +207,7 @@ export default {
       res.data.goods_price = res.data.goods_price + ''
       res.data.goods_number = res.data.goods_number + ''
       res.data.goods_weight = res.data.goods_weight + ''
-      console.log(res.data.goods_cat)
-      console.log(this.cateList)
       this.addOrEditForm = res.data
-      console.log(res.data)
     },
     // 获取商品分类的数据
     async getCateList() {
@@ -218,7 +215,6 @@ export default {
       if (res.meta.status !== 200)
         return this.$message.error("货物物品分类数据失败！");
       this.cateList = res.data;
-      console.log(this.$route.query)
     },
     // 当级联选择器发生变化时触发
     cascaderHandleChange() {
@@ -270,7 +266,6 @@ export default {
     },
     // 移除图片
     handleRemove(file) {
-      console.log(file);
       let tempPath = file.response.data.tmp_path;
       let pic = this.addOrEditForm.pics.findIndex((i) => i.pic === tempPath);
       this.addOrEditForm.pics.splice(pic, 1);
@@ -300,7 +295,6 @@ export default {
               }
               newaddOrEditForm.attrs.push(attr)
           })
-          console.log(newaddOrEditForm)
           // 判断添加还是修改操作
           if (this.$route.query._ === 'add') {
             const {data: res} = await this.$http.post('goods', newaddOrEditForm)
@@ -310,7 +304,6 @@ export default {
           }else {
             const {data: res} = await this.$http.put(`goods/${newaddOrEditForm.goods_id}`, newaddOrEditForm)
             if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
-            console.log(res.data)
             this.$router.push('/goods')
             this.$message.success('修改商品成功！')
           }

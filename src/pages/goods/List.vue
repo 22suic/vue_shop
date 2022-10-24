@@ -91,7 +91,6 @@ export default {
       });
       if (res.meta.status !== 200)
         return this.$message.error("获取商品列表失败！");
-      console.log(res.data);
       this.goodsList = res.data.goods;
       this.total = res.data.total
     },
